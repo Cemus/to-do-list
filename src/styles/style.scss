@@ -1,0 +1,380 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato&display=swap");
+
+$baseColor: #d46161;
+$baseAlpha: #d461617e;
+$mediumP: #f4861d;
+$lowP: #769655;
+$highP: #f44336;
+$lightAccent: #8b7d8d;
+$darkShades: #2b2c3f;
+$background: #faf8f9;
+
+@mixin paddingBase() {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@mixin paddingTask() {
+  padding: 1rem;
+}
+
+@mixin flexRow() {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+@mixin flexCol() {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+button,
+.button,
+select {
+  all: unset;
+  cursor: pointer;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Lato", sans-serif;
+  font-size: large;
+  letter-spacing: 3px;
+}
+
+.container {
+  display: grid;
+  align-items: baseline;
+  grid-template-columns: 1fr 3fr;
+  grid-template-rows: auto;
+  grid-template-areas:
+    "header header"
+    "leftPanel rightPanel";
+}
+
+header {
+  @include flexRow();
+  grid-area: header;
+  background-color: $baseColor;
+  padding: 1rem;
+}
+
+.close {
+  opacity: 0;
+}
+
+.search-bar {
+  background-color: #2b2c3fa2;
+  @include flexRow();
+  gap: 1rem;
+  border-radius: 1rem;
+  min-width: 40vh;
+  #search {
+    background: none;
+    border: none;
+    color: $background;
+    outline: none;
+    font-size: large;
+    &::placeholder {
+      color: $background;
+      font-size: large;
+      letter-spacing: 2px;
+    }
+    &:focus::placeholder {
+      color: transparent;
+    }
+    &::-webkit-search-cancel-button {
+      -webkit-appearance: none;
+    }
+  }
+}
+
+.icon {
+  fill: $background;
+  width: 48px;
+  height: 48px;
+  display: block;
+}
+
+.add {
+  fill: $baseColor;
+  width: 48px;
+}
+
+// ==================================== Left panel ================================
+
+.title {
+  color: #2b2c3f;
+}
+
+.left-panel {
+  grid-area: leftPanel;
+  @include flexCol();
+  margin-left: 4rem;
+  margin-right: 4rem;
+}
+
+.menu-container {
+  @include flexRow();
+  @include paddingBase();
+  align-items: center;
+  width: max-content;
+  /* add padding */
+  &:hover {
+    cursor: pointer;
+    background-color: #d461617e;
+    border-radius: 1rem;
+  }
+  :nth-child(1) {
+    fill: $baseColor;
+    width: 48px;
+  }
+}
+
+hr {
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.project-creator {
+  :nth-child(1) {
+    all: unset;
+    font-size: large;
+    border: none;
+    border-bottom: #2b2c3fab solid;
+    border-width: 2px;
+  }
+}
+.project {
+  @include flexRow();
+  width: max-content;
+  align-items: center;
+  justify-content: left;
+  border-style: none;
+  border: none;
+  border-style: none;
+}
+
+.project-selector {
+  @include flexRow();
+  @include paddingBase();
+  &:hover {
+    cursor: pointer;
+    background-color: rgba(214, 120, 120, 0.685);
+    border-radius: 1rem;
+  }
+}
+
+.add {
+  @include flexRow();
+  @include paddingBase();
+  justify-content: right;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  :nth-child(1) {
+    fill: rgb(212, 97, 97);
+  }
+  &:hover {
+    cursor: pointer;
+    background-color: rgba(214, 120, 120, 0.685);
+    border-radius: 1rem;
+  }
+}
+
+// ==================================== Right panel ================================
+
+.right-panel {
+  grid-area: rightPanel;
+}
+
+.task {
+  @include flexCol();
+  max-width: 80%;
+  min-width: 70vh;
+  gap: 0;
+}
+
+.base-menu {
+  @include flexRow();
+  align-items: center;
+}
+
+.task-selector {
+  @include flexRow();
+  @include paddingBase();
+  align-items: center;
+  gap: 4vh;
+}
+
+.hidden-menu {
+  @include flexRow();
+  @include paddingBase();
+  display: none;
+  align-items: center;
+  font-size: medium;
+  gap: 4vh;
+}
+
+//Selectors
+
+.priority {
+  align-items: center;
+  @include paddingTask();
+  &:hover {
+    cursor: pointer;
+    background-color: rgba(214, 120, 120, 0.685);
+    border-radius: 1rem;
+  }
+}
+
+.taskTitle {
+  @include paddingTask();
+  &:hover {
+    cursor: pointer;
+    background-color: rgba(214, 120, 120, 0.685);
+    border-radius: 1rem;
+  }
+}
+
+.taskDeadline {
+  @include paddingTask();
+  &:hover {
+    cursor: pointer;
+    background-color: rgba(214, 120, 120, 0.685);
+    border-radius: 1rem;
+  }
+}
+
+.taskDescription {
+  @include paddingTask();
+  &:hover {
+    cursor: pointer;
+    background-color: rgba(214, 120, 120, 0.685);
+    border-radius: 1rem;
+  }
+}
+
+//
+
+@mixin priorityCircle() {
+  border-radius: 50%;
+  min-width: 32px;
+  height: 32px;
+}
+
+.priorityHigh {
+  @include priorityCircle();
+  background: $highP;
+}
+.priorityMedium {
+  @include priorityCircle();
+  background: $mediumP;
+}
+.priorityLow {
+  @include priorityCircle();
+  background: $lowP;
+}
+
+.svg-selector {
+  padding: 0.5rem;
+  :nth-child(1) {
+    fill: $baseColor;
+  }
+  &:hover {
+    cursor: pointer;
+    background-color: rgba(214, 120, 120, 0.685);
+    border-radius: 1rem;
+  }
+}
+
+.checked {
+  :nth-child(1) {
+    text-decoration: line-through;
+  }
+}
+
+.check-trash {
+  @include flexRow();
+}
+
+.menu-svg {
+  @include flexRow();
+  gap: 4vh;
+}
+
+// ==================================== Form ================================
+
+.form-container {
+  opacity: 0;
+  z-index: -1;
+  @include flexCol();
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(17, 17, 75, 0.253);
+  min-height: 100%;
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+form {
+  @include flexCol();
+  background-color: $background;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  border-radius: 1rem;
+  gap: 2rem;
+  .icon {
+    fill: #d46161;
+    align-self: flex-end;
+  }
+  label {
+    text-align: center;
+  }
+
+  :nth-child(2 + 1) {
+    font-size: 1.5rem;
+  }
+
+  input,
+  select {
+    border: none;
+    border-bottom: solid $baseAlpha;
+    font-size: 1.5rem;
+  }
+
+  #taskDesc {
+    font-size: 1.5rem;
+    padding: 20px 10px;
+    line-height: 28px;
+    border: solid $baseAlpha;
+  }
+
+  .form-buttons {
+    @include flexRow();
+    justify-content: space-around;
+  }
+  .submit {
+    background-color: $highP;
+    margin: 2rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    border: none;
+    font-size: 1.5rem;
+    color: $background;
+    font-weight: bold;
+  }
+}
