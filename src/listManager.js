@@ -1,6 +1,6 @@
-import { domListFormProject } from "./domManipulation";
+import { initLocalStorage } from "./localStorage";
 
-let allTaskList = [];
+let allTaskList = initLocalStorage.tasks;
 
 function taskFilter(allTaskList, logic) {
   let finalList = [];
@@ -31,14 +31,14 @@ const idAttributor = (customId) => {
   return customId - 1;
 };
 
-function listFormProject() {
-  let list = [];
+function listProject() {
+  let allProjects = [];
   const projectContainer = document.getElementById("projectContainer");
   for (let i = 0; i < projectContainer.childElementCount; i++) {
     const child = projectContainer.children[i].children[0].children[0];
-    list.push(child.innerHTML);
+    allProjects.push(child.innerHTML);
   }
-  domListFormProject(list);
+  return allProjects;
 }
 
-export { allTaskList, taskFilter, idAttributor, listFormProject };
+export { allTaskList, taskFilter, idAttributor, listProject };

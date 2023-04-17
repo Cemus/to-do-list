@@ -112,9 +112,17 @@ function projectClick() {
   });
 }
 
+function createProjectsFromList(list) {
+  for (let i = 0; i < list.length; i++) {
+    createProject(list[i]);
+  }
+  projectClick();
+}
+
 export {
   projectUpdateTitle,
   createProject,
   createInputProject,
   projectValidation,
+  createProjectsFromList,
 };

@@ -3,13 +3,18 @@ import {
   allTaskList,
   taskFilter,
   idAttributor,
-  listFormProject,
+  listProject,
 } from "./listManager.js";
-import { domCreateTask, domReplaceIcon } from "./domManipulation";
+import {
+  domCreateTask,
+  domReplaceIcon,
+  domListFormProject,
+} from "./domManipulation";
 import {
   projectUpdateTitle,
   createInputProject,
   projectValidation,
+  createProjectsFromList,
 } from "./projectManager";
 import { parseISO } from "date-fns";
 import { format } from "date-fns";
@@ -19,6 +24,8 @@ import {
   dateEditor,
   descriptionEditor,
 } from "./taskEditor";
+
+import { localStorageUpdate, initLocalStorage } from "./localStorage";
 
 // ================================================================================
 
@@ -40,15 +47,46 @@ const inboxMenu = document.getElementById("inbox");
 const todayMenu = document.getElementById("today");
 const upcomingMenu = document.getElementById("upcoming");
 
-let customId = 0;
-
 let project = "All tasks";
-Search();
+
+// =================================================================================================
+
+// ================================ Functions d'initialisation =====================================
+
+let customId = initLocalStorage.customId;
+const projectList = initLocalStorage.projects;
+createProjectsFromList(projectList);
 fonctionsUtilitaires(project);
+Search();
+formHide(true);
+
+// ================================================================================
 
 // ================================================================================
 
 // ================================ Functions =====================================
+
+function fonctionsUtilitaires(project) {
+  const search = document.getElementById("search");
+  projectUpdateTitle(project);
+  domCreateTask(taskFilter(allTaskList, project));
+  actualisationTotaux();
+  menuSvg();
+  taskEditor(project);
+  search.value = "";
+  localStorageUpdate(allTaskList, listProject(), customId);
+}
+
+function createdProjectListener() {
+  const createdProjectsSelector =
+    document.querySelectorAll(".project-selector");
+  createdProjectsSelector.forEach((element) => {
+    element.addEventListener("click", () => {
+      project = element.children[0].innerHTML;
+      fonctionsUtilitaires(project);
+    });
+  });
+}
 
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -123,7 +161,7 @@ function menuSvg() {
         if (allTaskList[i].id == task.id) {
           allTaskList.splice(i, 1);
           task.remove();
-          actualisationTotaux();
+          fonctionsUtilitaires(project);
         }
       }
     });
@@ -142,6 +180,7 @@ function menuSvg() {
         for (let i = 0; i < allTaskList.length; i++) {
           if (allTaskList[i].id == task.id) {
             allTaskList[i].check = true;
+            fonctionsUtilitaires(project);
           }
         }
       } else {
@@ -150,6 +189,7 @@ function menuSvg() {
         for (let i = 0; i < allTaskList.length; i++) {
           if (allTaskList[i].id == task.id) {
             allTaskList[i].check = false;
+            fonctionsUtilitaires(project);
           }
         }
       }
@@ -163,10 +203,10 @@ function menuSvg() {
       for (let i = 0; i < allTaskList.length; i++) {
         if (allTaskList[i].project == projectName) {
           allTaskList.splice(i, 1);
-          fonctionsUtilitaires("All tasks");
         }
       }
       project.remove();
+      fonctionsUtilitaires("All tasks");
     });
   });
 }
@@ -196,6 +236,10 @@ function taskEditor(project) {
 
 function Search() {
   const search = document.getElementById("search");
+  search.addEventListener("focus", () => {
+    project = "Search mode";
+    projectUpdateTitle(project);
+  });
   search.addEventListener("keyup", (event) => {
     const taskContainer = document.getElementById("task-container");
     taskContainer.innerHTML = "";
@@ -210,8 +254,6 @@ function Search() {
         allTaskList[i].priority.includes(searchValue)
       ) {
         searchList.push(allTaskList[i]);
-        project = "Search mode";
-        projectUpdateTitle(project);
         domCreateTask(searchList);
         menuSvg();
         taskEditor(project);
@@ -223,11 +265,10 @@ function Search() {
 // ================================================================================
 
 // ================================ Listeners =====================================
-formHide(true);
 
 addTask.addEventListener("click", () => {
   formHide(false);
-  listFormProject();
+  domListFormProject(listProject());
 });
 
 submit.addEventListener("click", () => {
@@ -267,31 +308,6 @@ upcomingMenu.addEventListener("click", () => {
   project = "Upcoming tasks";
   fonctionsUtilitaires(project);
 });
-
-function createdProjectListener() {
-  const createdProjectsSelector =
-    document.querySelectorAll(".project-selector");
-  createdProjectsSelector.forEach((element) => {
-    element.addEventListener("click", () => {
-      project = element.children[0].innerHTML;
-      fonctionsUtilitaires(project);
-    });
-  });
-}
-
-function fonctionsUtilitaires(project) {
-  const search = document.getElementById("search");
-  projectUpdateTitle(project);
-  domCreateTask(taskFilter(allTaskList, project));
-  actualisationTotaux();
-  menuSvg();
-  taskEditor(project);
-  search.value = "";
-}
-
-// ================================================================================
-
-// ================================ Projects ======================================
 
 addProject.addEventListener("click", () => {
   createInputProject();
