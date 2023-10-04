@@ -42,7 +42,7 @@ body {
   margin: 0;
   box-sizing: border-box;
   font-family: "Lato", sans-serif;
-  font-size: large;
+  font-size: 1rem;
   letter-spacing: 3px;
 }
 
@@ -53,14 +53,15 @@ body {
   grid-template-rows: auto;
   grid-template-areas:
     "header header"
-    "leftPanel rightPanel";
+    "leftPanel rightPanel"
+    "footer footer";
 }
 
 header {
   @include flexRow();
   grid-area: header;
   background-color: $baseColor;
-  padding: 1rem;
+  padding-block: 2vh;
 }
 
 .close {
@@ -73,15 +74,16 @@ header {
   gap: 1rem;
   border-radius: 1rem;
   min-width: 40vh;
+  margin-inline: 2vw;
   #search {
     background: none;
     border: none;
     color: $background;
     outline: none;
-    font-size: large;
+    font-size: 1rem;
     &::placeholder {
       color: $background;
-      font-size: large;
+      font-size: 1rem;
       letter-spacing: 2px;
     }
     &:focus::placeholder {
@@ -95,14 +97,15 @@ header {
 
 .icon {
   fill: $background;
-  width: 48px;
-  height: 48px;
+  width: 32px;
+  height: 32px;
   display: block;
 }
 
 .add {
   fill: $baseColor;
-  width: 48px;
+  width: 32px;
+  margin: 2rem;
 }
 
 // ==================================== Left panel ================================
@@ -111,11 +114,18 @@ header {
   color: #2b2c3f;
 }
 
-.left-panel {
+nav {
   grid-area: leftPanel;
   @include flexCol();
   margin-left: 4rem;
   margin-right: 4rem;
+}
+
+ul,
+li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .menu-container {
@@ -145,13 +155,14 @@ hr {
 .project-creator {
   :nth-child(1) {
     all: unset;
-    font-size: large;
+    font-size: 1rem;
     border: none;
     border-bottom: #2b2c3fab solid;
     border-width: 2px;
   }
 }
 .project {
+  grid-area: projects;
   @include flexRow();
   width: max-content;
   align-items: center;
@@ -186,12 +197,14 @@ hr {
     background-color: rgba(214, 120, 120, 0.685);
     border-radius: 1rem;
   }
+  padding-bottom: 2vh;
 }
 
 // ==================================== Right panel ================================
 
-.right-panel {
+section {
   grid-area: rightPanel;
+  min-height: 100vh;
 }
 
 .task {
@@ -218,7 +231,7 @@ hr {
   @include paddingBase();
   display: none;
   align-items: center;
-  font-size: medium;
+  font-size: 1rem;
   gap: 4vh;
 }
 
@@ -311,32 +324,43 @@ hr {
 
 // ==================================== Form ================================
 
+.stop-scrolling {
+  height: 100%;
+  overflow: hidden;
+}
+
 .form-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 100%;
+  width: 100%;
   opacity: 0;
   z-index: -1;
   @include flexCol();
   align-items: center;
   justify-content: center;
-  background-color: rgba(17, 17, 75, 0.253);
-  min-height: 100%;
-  position: absolute;
-  width: 100%;
-  top: 50%;
-  left: 50%;
   transform: translate(-50%, -50%);
+}
+
+#taskClose {
+  position: relative;
+  left: 1.5vw;
 }
 
 form {
   @include flexCol();
   background-color: $background;
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: bold;
-  padding-left: 2rem;
-  padding-right: 2rem;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  border-radius: 1rem;
-  gap: 2rem;
+  padding-right: 2vw;
+  padding-left: 2vw;
+  padding-top: 1vh;
+  padding-bottom: 1vh;
+
+  border-radius: 1vh;
+  box-shadow: 1px 2px 2px 1px rgba(0, 0, 0, 0.685);
+  gap: 2vh;
   .icon {
     fill: #d46161;
     align-self: flex-end;
@@ -346,35 +370,95 @@ form {
   }
 
   :nth-child(2 + 1) {
-    font-size: 1.5rem;
+    font-size: 1rem;
   }
 
   input,
   select {
     border: none;
     border-bottom: solid $baseAlpha;
-    font-size: 1.5rem;
+    font-size: 1rem;
+    background-color: $background;
   }
 
   #taskDesc {
-    font-size: 1.5rem;
+    font-size: 1rem;
     padding: 20px 10px;
     line-height: 28px;
     border: solid $baseAlpha;
   }
-
+  :invalid {
+    border-bottom: solid $mediumP;
+  }
   .form-buttons {
     @include flexRow();
     justify-content: space-around;
   }
   .submit {
-    background-color: $highP;
+    background-color: $baseColor;
     margin: 2rem;
     padding: 1rem;
     border-radius: 1rem;
     border: none;
-    font-size: 1.5rem;
+    font-size: 1rem;
     color: $background;
     font-weight: bold;
+  }
+}
+
+footer {
+  display: flex;
+  grid-area: footer;
+  height: 4vh;
+  justify-content: center;
+  align-items: center;
+  background-color: $baseColor;
+  color: $background;
+  font-weight: bold;
+}
+
+@media screen and (max-width: 1024px) {
+  .container {
+    display: grid;
+    align-items: baseline;
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: auto;
+    grid-template-areas:
+      "header header"
+      "leftPanel leftPanel"
+      "rightPanel rightPanel"
+      "footer footer";
+  }
+  header {
+    justify-content: center;
+  }
+  .search-bar {
+    margin: 0;
+  }
+  nav {
+    align-items: center;
+  }
+  .menu-task,
+  .menu-project,
+  section {
+    text-align: center;
+  }
+  section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .task-selector {
+    gap: 1vw;
+  }
+  .base-menu {
+    @include flexCol();
+  }
+  .hidden-menu {
+    justify-content: center;
+  }
+  hr {
+    visibility: hidden;
   }
 }

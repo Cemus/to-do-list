@@ -20,7 +20,7 @@ function createInputProject() {
 
 function createProject(name) {
   const parent = document.getElementById("projectContainer");
-  const project = document.createElement("div");
+  const project = document.createElement("li");
   const projectNameAndTotal = document.createElement("div");
   projectNameAndTotal.classList.add("project-selector");
   project.classList.add("project");

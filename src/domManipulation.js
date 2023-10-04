@@ -3,7 +3,7 @@ function domCreateTask(list) {
   parent.innerHTML = "";
 
   for (let i = 0; i < list.length; i++) {
-    const task = document.createElement("div");
+    const task = document.createElement("li");
     task.id = list[i].id;
     const taskBaseMenu = document.createElement("div");
     taskBaseMenu.classList.add("base-menu");

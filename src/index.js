@@ -262,13 +262,24 @@ function Search() {
   });
 }
 
+function disableScroll() {
+  document.body.classList.add("stop-scrolling");
+}
+
+function enableScroll() {
+  document.body.classList.remove("stop-scrolling");
+}
 // ================================================================================
 
 // ================================ Listeners =====================================
 
 addTask.addEventListener("click", () => {
-  formHide(false);
-  domListFormProject(listProject());
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  disableScroll();
+  setTimeout(() => {
+    formHide(false);
+    domListFormProject(listProject());
+  }, 250);
 });
 
 submit.addEventListener("click", () => {
@@ -286,6 +297,7 @@ submit.addEventListener("click", () => {
     );
     customId = customId + 1;
     formHide(true);
+    enableScroll();
     taskReset();
     fonctionsUtilitaires(project);
   }
@@ -294,6 +306,7 @@ submit.addEventListener("click", () => {
 close.addEventListener("click", () => {
   taskReset();
   formHide(true);
+  enableScroll();
 });
 
 inboxMenu.addEventListener("click", () => {
